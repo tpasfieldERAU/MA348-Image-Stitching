@@ -35,3 +35,36 @@ def GenerateCoordsFromImage(image):
             vals[k] = image[i,j]
             k += 1
     return coords, vals
+
+
+def interpolate(image):
+    (n,m) = image.shape
+    buffer = np.zeros(image.shape, dtype=np.uint8)
+    for i in range(n):
+        for j in range(m):
+            if image[i,j] == 0:
+                ## Decide to interpolate or not
+                up = image[i-1,j]
+
+                try:
+                    down = image[i+1,j]
+                except IndexError:
+                    down = 0
+
+                left = image[i,j-1]
+
+                try:
+                    right = image[i,j+1]
+                except IndexError:
+                    right = 0
+
+                vals = [up, down, left, right]
+                count = 0
+                for val in vals:
+                    if val > 0:count+=1
+                if count > 2:
+                    buffer[i,j] = sum(vals)//count
+            else:
+                buffer[i,j] = image[i,j]
+
+    return buffer
