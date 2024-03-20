@@ -1,10 +1,12 @@
 import numpy as np
 
-def DrawImageFromCoords(coords, vals):
+def DrawImageFromCoords(coords, vals, center):
     # Find max and min of x1 and x2 in coords, use for bounding box of image.
     # Min/Max of vals doesn't matter, we aren't normalizing.
     x1 = coords[:,0]
     x2 = coords[:,1]
+
+    cx, cy = center
 
     x1_min = np.min(x1)
     x1_max = np.max(x1)
