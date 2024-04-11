@@ -1,14 +1,14 @@
 import numpy as np
 
-def DrawImageFromCoords(coords, vals, center):
+def DrawImageFromCoords(coords, vals, origin, canvas):
     # Find max and min of x1 and x2 in coords, use for bounding box of image.
     # Min/Max of vals doesn't matter, we aren't normalizing.
+    # Origin should be bottom left of image. Top left? Idk
 
-    # TODO Add relative coordinates, remove overflow.
     x1 = coords[:,0]
     x2 = coords[:,1]
 
-    cx, cy = center
+    cx, cy = origin
 
     x1_min = np.min(x1)
     x1_max = np.max(x1)
@@ -18,12 +18,12 @@ def DrawImageFromCoords(coords, vals, center):
     width = round(x1_max - x1_min)+1
     height = round(x2_max - x2_min)+1
 
-    img = np.zeros((width, height), dtype=np.uint8)
+    img = np.zeros((canvas), dtype=np.uint8)
 
     for i in range(vals.size):
         x1 = round(coords[i, 0] - x1_min)
         x2 = round(coords[i, 1] - x2_min)
-        img[x1,x2] = vals[i]
+        img[x1+cx, x2+cy] = vals[i]
     return img
 
 
